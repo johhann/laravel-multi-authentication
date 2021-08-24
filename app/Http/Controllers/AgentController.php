@@ -3,15 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function login(Request $request)
+    {
+        return Agent::all();
+
+        if(!Auth::guard('agent')->attempt($request->only('email', 'password'), $request->filled('rememberToken'))){
+            return 'Invalid credentials';
+        }
+
+        return "Logged in.";
+    }
+
+    public function home()
+    {
+        return 'Home';
+    }
+
+
     public function index()
     {
         //
